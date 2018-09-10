@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
+
+import { toast } from "react-toastify";
+
 import ButtonGroup from './ButtonGroup';
+import Display from './Display';
+import Message from './Message';
 
 class Timer extends Component {
   state = {
@@ -28,6 +33,13 @@ class Timer extends Component {
     })
   }
 
+  notify = (text, type) => {
+    toast[type](text, {
+      position: toast.POSITION.TOP_CENTER,
+      autoClose: 1000
+    });
+  };
+
   start = () => {
     const handle = setInterval(() => {
       this.count();
@@ -41,13 +53,15 @@ class Timer extends Component {
 
   stop = () => {
     this.clean('Mis en pause');
+    this.notify('en pause', 'success');
   }
 
   reset = () => {
     this.clean();
     this.setState({
       duration: this.state.initialValue
-    })
+    });
+    this.notify('réinitialisation', 'error');
   }  
 
   prependZero = value => {
@@ -74,10 +88,9 @@ class Timer extends Component {
   render() { 
     return (
       <div>
-        <h1>{this.props.title}</h1>
-        <h2 style={{marginLeft: 15}}>Durée : {this.formatDuration()}</h2> 
+        <Display title={this.props.title} timerValue={this.formatDuration()} />
         <ButtonGroup onStart={this.start} onStop={this.stop} onReset={this.reset} />
-        <div>{this.state.message}</div>
+        <Message text={this.state.message} delay={1500}/>
       </div>
     );
   }
