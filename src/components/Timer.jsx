@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 class Timer extends Component {
   state = {
+    initialValue: 5,
     duration: 5,
     handle: 0,
     message: ''
@@ -13,25 +14,40 @@ class Timer extends Component {
     });
     if(this.state.duration === 0) {
       this.clean();
+      this.setState({
+        duration: this.state.initialValue
+      });
     }
   };
 
-  clean = () => {
+  clean = (message = 'Compte à rebours réinitialisé') => {
     clearInterval(this.state.handle);   
     this.setState({
-      message: 'Compte à rebours réinitialisé'
+      message: message
     })
   }
 
-  componentDidMount() {
+  start = () => {
     const handle = setInterval(() => {
       this.count();
     }, 1000);
-
+  
     this.setState({
-      handle: handle
+      handle: handle,
+      message: ''
     });
   }
+
+  stop = () => {
+    this.clean('Mis en pause');
+  }
+
+  reset = () => {
+    this.clean();
+    this.setState({
+      duration: this.state.initialValue
+    })
+  }  
 
   componentWillUnmount() {
     this.clean();
@@ -41,9 +57,13 @@ class Timer extends Component {
     return (
       <div>
         <h2>Pomodoro</h2>
-        <h3>{this.state.message}</h3>
         <div>Durée : {this.state.duration}</div>
-        
+        <div>
+          <button onClick={this.start}>start</button>
+          <button onClick={this.stop}>stop</button>
+          <button onClick={this.reset}>reset</button>
+        </div>
+        <div>{this.state.message}</div>
       </div>
     );
   }
