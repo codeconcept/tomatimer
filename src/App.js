@@ -5,7 +5,13 @@ import Timer from './components/Timer';
 class App extends Component {
   render() {
     return (
-      <Timer />
+      <div>
+        <Timer duration="45" title="pomodoro" />
+        <hr/>
+        <Timer duration="5" title="courte pause" />
+        <hr/>
+        <Timer duration="10" title="longue pause" />
+      </div>
     );
   }
 }

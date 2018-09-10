@@ -50,6 +50,23 @@ class Timer extends Component {
     })
   }  
 
+  prependZero = value => {
+    return value < 10 ? "0"+ value.toString() : value.toString();
+  };
+
+  formatDuration = () => {
+    const minutes = Math.floor(this.state.duration / 60);
+    const seconds = Math.floor(this.state.duration % 60);
+    return `${this.prependZero(minutes)}:${this.prependZero(seconds)}`;
+  }
+
+  componentDidMount() {
+    this.setState({
+      initialValue: parseInt(this.props.duration, 10) * 60,
+      duration: parseInt(this.props.duration, 10) * 60
+    })
+  }
+
   componentWillUnmount() {
     this.clean();
   }
@@ -57,8 +74,8 @@ class Timer extends Component {
   render() { 
     return (
       <div>
-        <h2>Pomodoro</h2>
-        <div>Durée : {this.state.duration}</div>
+        <h1>{this.props.title}</h1>
+        <h2 style={{marginLeft: 15}}>Durée : {this.formatDuration()}</h2> 
         <ButtonGroup onStart={this.start} onStop={this.stop} onReset={this.reset} />
         <div>{this.state.message}</div>
       </div>
