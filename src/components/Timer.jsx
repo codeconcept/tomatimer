@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ButtonGroup from './ButtonGroup';
 
 class Timer extends Component {
   state = {
@@ -10,7 +11,7 @@ class Timer extends Component {
 
   count = () => {
     this.setState({
-      duration: parseInt(this.state.duration) -1
+      duration: parseInt(this.state.duration, 10) -1
     });
     if(this.state.duration === 0) {
       this.clean();
@@ -58,11 +59,7 @@ class Timer extends Component {
       <div>
         <h2>Pomodoro</h2>
         <div>Durée : {this.state.duration}</div>
-        <div>
-          <button onClick={this.start}>start</button>
-          <button onClick={this.stop}>stop</button>
-          <button onClick={this.reset}>reset</button>
-        </div>
+        <ButtonGroup onStart={this.start} onStop={this.stop} onReset={this.reset} />
         <div>{this.state.message}</div>
       </div>
     );
